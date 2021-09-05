@@ -1,0 +1,26 @@
+version: "3.9"
+
+networks:
+    mynetwork:
+    
+services:
+    postgresdb:
+        restart: always
+        image: postgres:13.1
+        container_name: AddressBook
+        environment:
+              - POSTGRES_USER=postgres
+              - POSTGRES_PASSWORD=123
+              - APP_DB_NAME=AddressBook
+        volumes:
+            - ./db:/docker-entrypoint-initdb.d/
+        ports:
+            - "8001:5432"
+        networks:
+            - mynetwork
+    web:
+        build: .
+        ports:
+            - "8000:80"
+        networks:
+            - mynetwork
